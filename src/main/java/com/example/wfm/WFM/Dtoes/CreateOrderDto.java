@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 public class CreateOrderDto {
 
     private String address;
-    private Integer serviceNumber;
-
-
+    private String serviceNumber;
 
 }

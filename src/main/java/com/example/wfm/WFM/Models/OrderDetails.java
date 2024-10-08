@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 public class OrderDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGen")
+    @SequenceGenerator(name = "mySeqGen", sequenceName = "WFM_SEQ", allocationSize = 1)
     @Column(name = "ID")
     private Integer id;
     @Column(name = "ASSIGNEDTO")
@@ -34,8 +35,6 @@ public class OrderDetails {
     @Column(name = "ADDRESS")
     private String address;
     @Column(name = "SERVICENUMBER")
-    private Integer servicenumber;
-
-
+    private String serviceNumber;
 
 }

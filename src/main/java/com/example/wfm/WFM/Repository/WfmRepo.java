@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface WfmRepo extends JpaRepository<OrderDetails,Integer> {
 
 
-    @Query(value = "", nativeQuery = true)
-    boolean isOrderExist(int id);
+//    @Query(value = "", nativeQuery = true)
+//    boolean isOrderExist(int id);
 }

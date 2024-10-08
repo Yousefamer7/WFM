@@ -10,14 +10,15 @@ public class MapperDtos {
 
         return OrderDetails.builder().
                 address(orderDto.getAddress()).
-                servicenumber(orderDto.getServiceNumber())
+                serviceNumber(orderDto.getServiceNumber())
                 .build();
     }
+
 
     public static CreateOrderDto Order_To_Dto(OrderDetails orderDetails){
         return  CreateOrderDto.builder().
                 address(orderDetails.getAddress())
-                .serviceNumber(orderDetails.getServicenumber())
+                .serviceNumber(orderDetails.getServiceNumber())
                 .build();
     }
 }
