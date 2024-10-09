@@ -28,8 +28,13 @@ public class WfmController {
         }
 
         @GetMapping("/assignOrder")
-        public Optional<OrderDetails> assignTechnical(@RequestParam int id, @RequestParam String name){
+        public ResponseMessage assignTechnical(@RequestParam int id, @RequestParam String name){
                return  this.orderService.assignTechnicals(id, name);
+        }
+
+        @GetMapping("/getAllTechnicals")
+        public List<Technicals> getAllTechnicals(){
+            return  this.orderService.getTechnicals();
         }
 
 
