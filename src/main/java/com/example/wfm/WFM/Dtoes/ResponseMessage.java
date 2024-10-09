@@ -1,5 +1,6 @@
 package com.example.wfm.WFM.Dtoes;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseMessage {
-        private String message;
-    }
+
+    private String MESSAGE;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Object body;
+
+        public ResponseMessage(String msg){
+            this.MESSAGE = msg;
+        }
+}
 

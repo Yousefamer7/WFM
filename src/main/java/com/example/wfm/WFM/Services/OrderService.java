@@ -28,9 +28,10 @@ public class OrderService {
 
     public ResponseMessage CreateOrder(CreateOrderDto orderDto){
 
-      this.wfmRepo.save(MapperDtos.convertCreateOrderDtoToOrderEntity(orderDto));
+        final OrderDetails save = this.wfmRepo.save(MapperDtos.convertCreateOrderDtoToOrderEntity(orderDto));
 
-      return new ResponseMessage("Order Created");
+//      Integer id = MapperDtos.convertCreateOrderDtoToOrderEntity(orderDto).getId();
+        return new ResponseMessage("Order Created", save.getId());
 
     }
 
@@ -39,14 +40,22 @@ public class OrderService {
 
         this.TechnicalRepo.findByName(techName).orElseThrow(() -> new RuntimeException("Worker with name " + techName + " does not exist"));
 
-           if (wfmRepo.existsById(id)){
+        Optional<OrderDetails> order = wfmRepo.findById(id);
+
+        if(order.isEmpty()){
+            throw new RuntimeException("No order with id " + id);
+        }
+
+        String assigned = order.get().getAssignedto();
+        if (assigned != null && assigned.equals(techName)){
+            return new ResponseMessage("Order is assigned to this tech already");
+        }
+
               int updatedRows = this.wfmRepo.updateTechName(techName, id);
               if(updatedRows == 0){
                   throw new RuntimeException("Not Assigned");
               }
-              return new ResponseMessage("assigned");
-           }
-           return new ResponseMessage("this id is not exist");
+              return new ResponseMessage("Work order with id " +id+ " assigned to " + techName);
     }
 
     public List<Technicals> getTechnicals(){
