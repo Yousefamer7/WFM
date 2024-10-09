@@ -8,6 +8,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public interface WfmRepo extends JpaRepository<OrderDetails,Integer> {
@@ -18,6 +22,15 @@ public interface WfmRepo extends JpaRepository<OrderDetails,Integer> {
      int updateTechName(@Param("name") String name , @Param("id") Integer id);
 
     Optional<OrderDetails> findByAssignedto(String name);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE OrderDetails o SET o.visitdate  = :visitdate, o.slot= :slot ,o.status='schedule' WHERE o.id= :id")
+    int updateVisitDataAndSlots(@Param("visitdate")LocalDateTime visitdate,@Param("slot") String slot,@Param("id")Integer id );
+
+
+    List<OrderDetails> findByVisitdate(LocalDate visitdate);
+
 
 //    @Transactional
 //    @Query(value = "select o from OrderDetails o  WHERE o.id= :id")

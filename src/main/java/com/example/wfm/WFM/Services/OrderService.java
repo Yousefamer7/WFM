@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Array;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +33,7 @@ public class OrderService {
 
         final OrderDetails save = this.wfmRepo.save(MapperDtos.convertCreateOrderDtoToOrderEntity(orderDto));
 
-//      Integer id = MapperDtos.convertCreateOrderDtoToOrderEntity(orderDto).getId();
+
         return new ResponseMessage("Order Created", save.getId());
 
     }
@@ -64,4 +67,13 @@ public class OrderService {
 
     }
 
+
+    public ResponseMessage ScheduleTechnicals(LocalDate dateTime){
+        return new ResponseMessage("get", this.wfmRepo.findByVisitdate(dateTime));
+    }
 }
+
+
+
+
+

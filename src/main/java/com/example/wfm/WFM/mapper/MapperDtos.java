@@ -13,6 +13,7 @@ public class MapperDtos {
         return OrderDetails.builder().
                 address(orderDto.getAddress()).
                 serviceNumber(orderDto.getServiceNumber())
+                .status("open")
                 .build();
     }
 
