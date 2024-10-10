@@ -118,7 +118,7 @@ public class OrderService {
         }
         Optional<OrderDetails> order =this.wfmRepo.findById(id);
 
-        if (order.get().getStatus()=="closed"){
+        if (order.get().getStatus().equals("closed")){
             return  new ResponseMessage(400,"this order is already close");
         }
         return new ResponseMessage(200,"order closed");
