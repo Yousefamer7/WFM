@@ -30,12 +30,8 @@ public class OrderService {
 
 
     public ResponseMessage CreateOrder(CreateOrderDto orderDto){
-
         final OrderDetails save = this.wfmRepo.save(MapperDtos.convertCreateOrderDtoToOrderEntity(orderDto));
-
-
-        return new ResponseMessage("Order Created", save.getId());
-
+        return new ResponseMessage(200, "Order Created", save.getId());
     }
 
 
@@ -51,14 +47,14 @@ public class OrderService {
 
         String assigned = order.get().getAssignedto();
         if (assigned != null && assigned.equals(techName)){
-            return new ResponseMessage("Order is assigned to this tech already");
+            return new ResponseMessage(400, "Order is assigned to this tech already");
         }
 
               int updatedRows = this.wfmRepo.updateTechName(techName, id);
               if(updatedRows == 0){
                   throw new RuntimeException("Not Assigned");
               }
-              return new ResponseMessage("Work order with id " +id+ " assigned to " + techName);
+              return new ResponseMessage(200, "Work order with id " +id+ " assigned to " + techName);
     }
 
     public List<Technicals> getTechnicals(){
@@ -71,9 +67,9 @@ public class OrderService {
         List<OrderDetails> orders =new ArrayList<>();
         orders=this.wfmRepo.findAll();
         if (orders.isEmpty())
-            return new ResponseMessage("There is no Orders");
+            return new ResponseMessage(400, "There is no Orders");
 
-           return new ResponseMessage("here are All Orders",orders);
+           return new ResponseMessage(200, "here are All Orders",orders);
 
     }
 
@@ -86,21 +82,22 @@ public class OrderService {
         return   this.wfmRepo.findAvailableSlotsByWorkerAndDate(dateTime,name);
     }
 
-    public ResponseMessage Schedule(LocalDate localDate,String name,String Slot){
+    public ResponseMessage Schedule(LocalDate localDate,String name,String Slot,Integer id){
 
         List<String> availableSlots = this.wfmRepo.findAvailableSlotsByWorkerAndDate(localDate,name);
-        if (availableSlots.isEmpty()){
-            return new ResponseMessage("This worker is bussy try anothor worker");
+        final String s = this.wfmRepo.findslotById(id);
+        if (availableSlots.isEmpty() || (s != null && s.equals(Slot))){
+            return new ResponseMessage(400, "This worker is busy try another worker");
         }
         if (availableSlots.contains(Slot)){
-            int updatedRows = this.wfmRepo.updateVisitDataAndSlots(localDate,Slot,name);
+            int updatedRows = this.wfmRepo.updateVisitDataAndSlots(id,localDate,Slot,name);
             if(updatedRows == 0){
-                return new ResponseMessage("Not Scedule");
+                return new ResponseMessage(400, "Not Scedule");
             }
-            return new ResponseMessage("Work order with name " +name+ " is scheduled  ");
+            return new ResponseMessage(200, "Work order with name " +name+ " is scheduled");
 
         }
-        return  new ResponseMessage ("this slot is already exist try anothor slot");
+        return  new ResponseMessage (200, "this slot is already exist try anothor slot");
 
     }
 }

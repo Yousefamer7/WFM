@@ -41,7 +41,7 @@ public class WfmController {
         }
 
         @GetMapping("/getAllOrder")
-        public  ResponseMessage GetAllOrderFromDb(){
+        public  ResponseMessage getAllOrder(){
             return this.orderService.getAllOrder();
         }
 
@@ -58,7 +58,7 @@ public class WfmController {
 
         @GetMapping("/schedule")
         public ResponseMessage ScheduleOrdersInDb(@RequestBody ScheduleDto scheduleDto){
-            return this.orderService.Schedule(scheduleDto.getVisitdate(),scheduleDto.getAssignedto(),scheduleDto.getSlot());
+            return this.orderService.Schedule(scheduleDto.getVisitdate(),scheduleDto.getAssignedto(),scheduleDto.getSlot(),scheduleDto.getId());
         }
 
 

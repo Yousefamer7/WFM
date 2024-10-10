@@ -8,15 +8,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseMessage {
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String MESSAGE;
+    private int statusCode;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object body;
 
-        public ResponseMessage(String msg){
-            this.MESSAGE = msg;
+        public ResponseMessage(int statusCode, String message){
+            this.statusCode = statusCode;
+            this.message = message;
         }
-        public ResponseMessage( Object body){
+        public ResponseMessage(int statusCode, Object body){
+            this.statusCode = statusCode;
             this.body =body;
         }
 }
