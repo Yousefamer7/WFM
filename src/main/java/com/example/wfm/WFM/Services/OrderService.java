@@ -30,6 +30,9 @@ public class OrderService {
 
 
     public ResponseMessage CreateOrder(CreateOrderDto orderDto){
+
+//        @Pattern(regexp = "\\d{8,11}", message = "Phone number must be numeric and between 8 and 11 digits")
+
         final OrderDetails save = this.wfmRepo.save(MapperDtos.convertCreateOrderDtoToOrderEntity(orderDto));
         return new ResponseMessage(200, "Order Created", save.getId());
     }

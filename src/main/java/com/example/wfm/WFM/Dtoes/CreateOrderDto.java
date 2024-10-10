@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CreateOrderDto {
 
-
     private String address;
     private String serviceNumber;
 
