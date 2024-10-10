@@ -32,6 +32,12 @@ public interface WfmRepo extends JpaRepository<OrderDetails,Integer> {
     List<OrderDetails> findByVisitdate(LocalDate visitdate);
 
 
+
+    @Transactional
+    @Query(value = "SELECT o.slot FROM OrderDetails o WHERE o.visitdate= :visitdate AND o.slot IS NOT NULL")
+    List<String> findBussySlots(@Param("visitdate") LocalDate visitdate);
+
+
 //    @Transactional
 //    @Query(value = "select o from OrderDetails o  WHERE o.id= :id")
 //    OrderDetails idIsExist(@Param("id") Integer id);

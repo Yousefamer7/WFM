@@ -39,10 +39,18 @@ public class WfmController {
             return  this.orderService.getTechnicals();
         }
 
+        @GetMapping("/getAllOrder")
+        public  ResponseMessage GetAllOrderFromDb(){
+            return this.orderService.getAllOrder();
+        }
+
         @GetMapping("/schedule")
-        public ResponseMessage scheduleTechnicals(@RequestBody ScheduleDto scheduleDto){
+        public List<String> scheduleTechnicals(@RequestBody ScheduleDto scheduleDto){
             return this.orderService.ScheduleTechnicals(scheduleDto.getVisitdate());
         }
+
+
+
 
 
 }

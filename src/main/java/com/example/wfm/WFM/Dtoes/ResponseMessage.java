@@ -16,5 +16,8 @@ public class ResponseMessage {
         public ResponseMessage(String msg){
             this.MESSAGE = msg;
         }
+        public ResponseMessage(Object body){
+            this.body =body;
+        }
 }
 

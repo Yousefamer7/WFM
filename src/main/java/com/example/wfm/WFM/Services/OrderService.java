@@ -67,9 +67,23 @@ public class OrderService {
 
     }
 
+    public ResponseMessage getAllOrder(){
+        List<OrderDetails> orders =new ArrayList<>();
+        orders=this.wfmRepo.findAll();
+        if (orders.isEmpty())
+            return new ResponseMessage("There is no Orders");
 
-    public ResponseMessage ScheduleTechnicals(LocalDate dateTime){
-        return new ResponseMessage("get", this.wfmRepo.findByVisitdate(dateTime));
+        return new ResponseMessage(orders);
+
+    }
+
+
+
+    public List<String> ScheduleTechnicals(LocalDate dateTime){
+        this.wfmRepo.findByVisitdate(dateTime);
+
+     return   this.wfmRepo.findBussySlots(dateTime);
+//        return new ResponseMessage("nnkk");
     }
 }
 
