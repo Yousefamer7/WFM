@@ -53,7 +53,7 @@ public class WfmController {
 
         @GetMapping("/GetAllAvailableSlots")
         public List<String> GetAllAvailableSlots(@RequestBody ScheduleDto scheduleDto){
-            return this.orderService.AvailableSlots(scheduleDto.getVisitdate(),scheduleDto.getAssignedto());
+            return this.orderService.AvailableSlots(scheduleDto.getVisitdate(),scheduleDto.getAssignedto(),scheduleDto.getId());
         }
 
         @GetMapping("/schedule")
@@ -61,6 +61,13 @@ public class WfmController {
             return this.orderService.Schedule(scheduleDto.getVisitdate(),scheduleDto.getAssignedto(),scheduleDto.getSlot(),scheduleDto.getId());
         }
 
+
+        @GetMapping("/CloseOrder")
+        public ResponseMessage CloseOrder(@RequestParam Integer id ){
+
+            return this.orderService.CloseOrder(id);
+
+        }
 
 
 

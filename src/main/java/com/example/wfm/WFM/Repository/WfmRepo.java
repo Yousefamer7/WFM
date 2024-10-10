@@ -41,4 +41,9 @@ public interface WfmRepo extends JpaRepository<OrderDetails,Integer> {
     @Transactional
     @Query(value = "UPDATE OrderDetails o SET o.visitdate  = :visitdate, o.slot= :slot ,o.status='schedule' WHERE o.assignedto= :assignedto and o.id= :id")
     int updateVisitDataAndSlots(@Param("id") Integer id,@Param("visitdate") LocalDate visitdate, @Param("slot") String slot, @Param("assignedto") String assignedto);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE OrderDetails o SET o.status='closed' where o.id = :id")
+    int updateStatus(@Param("id")Integer id);
 }

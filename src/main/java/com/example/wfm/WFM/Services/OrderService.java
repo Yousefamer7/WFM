@@ -22,6 +22,7 @@ import java.util.Optional;
 @Service
 public class OrderService {
 
+
     @Autowired
     private WfmRepo wfmRepo;
 
@@ -31,7 +32,9 @@ public class OrderService {
 
     public ResponseMessage CreateOrder(CreateOrderDto orderDto){
 
-//        @Pattern(regexp = "\\d{8,11}", message = "Phone number must be numeric and between 8 and 11 digits")
+
+       if ( !isvalidNumber(orderDto.getServiceNumber()))
+           return new ResponseMessage(400,"number must be numeric and must be between 8 and 11");
 
         final OrderDetails save = this.wfmRepo.save(MapperDtos.convertCreateOrderDtoToOrderEntity(orderDto));
         return new ResponseMessage(200, "Order Created", save.getId());
@@ -81,7 +84,7 @@ public class OrderService {
         return this.wfmRepo.findByVisitdate(dateTime);
     }
 
-    public List<String> AvailableSlots(LocalDate dateTime,String name){
+    public List<String> AvailableSlots(LocalDate dateTime,String name,Integer id){
         return   this.wfmRepo.findAvailableSlotsByWorkerAndDate(dateTime,name);
     }
 
@@ -103,6 +106,24 @@ public class OrderService {
         return  new ResponseMessage (200, "this slot is already exist try anothor slot");
 
     }
+
+    public boolean isvalidNumber(String number){
+        return  number != null && number.matches("\\d{8,11}");
+    }
+
+    public  ResponseMessage CloseOrder(Integer id){
+        int updatedRows = this.wfmRepo.updateStatus(id);
+        if(updatedRows == 0){
+            throw new RuntimeException("Not close");
+        }
+        Optional<OrderDetails> order =this.wfmRepo.findById(id);
+
+        if (order.get().getStatus()=="closed"){
+            return  new ResponseMessage(400,"this order is already close");
+        }
+        return new ResponseMessage(200,"order closed");
+    }
+
 }
 
 
