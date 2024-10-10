@@ -2,6 +2,7 @@ package com.example.wfm.WFM.Controllers;
 
 
 import com.example.wfm.WFM.Dtoes.CreateOrderDto;
+import com.example.wfm.WFM.Dtoes.DateDto;
 import com.example.wfm.WFM.Dtoes.ResponseMessage;
 import com.example.wfm.WFM.Dtoes.ScheduleDto;
 import com.example.wfm.WFM.Models.OrderDetails;
@@ -44,10 +45,23 @@ public class WfmController {
             return this.orderService.getAllOrder();
         }
 
-        @GetMapping("/schedule")
-        public List<String> scheduleTechnicals(@RequestBody ScheduleDto scheduleDto){
-            return this.orderService.ScheduleTechnicals(scheduleDto.getVisitdate());
+        @GetMapping("/getAllOrderByDate")
+        public  List<OrderDetails> GetAllOrderByDateFromDb(@RequestBody DateDto dateDto){
+            return this.orderService.GetAllOrderByDate(dateDto.getVisitdate());
         }
+
+
+        @GetMapping("/GetAllAvailableSlots")
+        public List<String> GetAllAvailableSlots(@RequestBody ScheduleDto scheduleDto){
+            return this.orderService.AvailableSlots(scheduleDto.getVisitdate(),scheduleDto.getAssignedto());
+        }
+
+        @GetMapping("/schedule")
+        public ResponseMessage ScheduleOrdersInDb(@RequestBody ScheduleDto scheduleDto){
+            return this.orderService.Schedule(scheduleDto.getVisitdate(),scheduleDto.getAssignedto(),scheduleDto.getSlot());
+        }
+
+
 
 
 

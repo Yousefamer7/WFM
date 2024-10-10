@@ -12,13 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ScheduleDto {
-
-
+public class DateDto {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate visitdate;
-    private String assignedto;
-    private  String slot;
-
-
 }

@@ -19,26 +19,22 @@ public interface WfmRepo extends JpaRepository<OrderDetails,Integer> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE OrderDetails o SET o.assignedto  = :name, o.status='assigned' WHERE o.id= :id")
-     int updateTechName(@Param("name") String name , @Param("id") Integer id);
+    int updateTechName(@Param("name") String name, @Param("id") Integer id);
 
     Optional<OrderDetails> findByAssignedto(String name);
-
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE OrderDetails o SET o.visitdate  = :visitdate, o.slot= :slot ,o.status='schedule' WHERE o.id= :id")
-    int updateVisitDataAndSlots(@Param("visitdate")LocalDateTime visitdate,@Param("slot") String slot,@Param("id")Integer id );
 
 
     List<OrderDetails> findByVisitdate(LocalDate visitdate);
 
 
-
+    //    this to find bussy slots to specific worker
+//    @Query(value = "SELECT o.slot FROM OrderDetails o WHERE o.visitdate= :visitdate AND o.slot IS NOT NULL")
     @Transactional
-    @Query(value = "SELECT o.slot FROM OrderDetails o WHERE o.visitdate= :visitdate AND o.slot IS NOT NULL")
-    List<String> findBussySlots(@Param("visitdate") LocalDate visitdate);
+    @Query(value = "SELECT T.slot FROM Technicals_Slots T WHERE T.slot NOT IN (" + "SELECT o.slot FROM OrderDetails o WHERE o.assignedto = :assignedto AND o.visitdate = :visitdate AND o.slot is not null)")
+    List<String> findAvailableSlotsByWorkerAndDate(@Param("visitdate") LocalDate visitdate, @Param("assignedto") String assignedto);
 
-
-//    @Transactional
-//    @Query(value = "select o from OrderDetails o  WHERE o.id= :id")
-//    OrderDetails idIsExist(@Param("id") Integer id);
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE OrderDetails o SET o.visitdate  = :visitdate, o.slot= :slot ,o.status='schedule' WHERE o.assignedto= :assignedto  AND o.slot IS NOT NULL")
+    int updateVisitDataAndSlots(@Param("visitdate") LocalDate visitdate, @Param("slot") String slot, @Param("assignedto") String assignedto);
 }

@@ -73,17 +73,35 @@ public class OrderService {
         if (orders.isEmpty())
             return new ResponseMessage("There is no Orders");
 
-        return new ResponseMessage(orders);
+           return new ResponseMessage("here are All Orders",orders);
 
     }
 
 
+    public List<OrderDetails> GetAllOrderByDate(LocalDate dateTime ){
+        return this.wfmRepo.findByVisitdate(dateTime);
+    }
 
-    public List<String> ScheduleTechnicals(LocalDate dateTime){
-        this.wfmRepo.findByVisitdate(dateTime);
+    public List<String> AvailableSlots(LocalDate dateTime,String name){
+        return   this.wfmRepo.findAvailableSlotsByWorkerAndDate(dateTime,name);
+    }
 
-     return   this.wfmRepo.findBussySlots(dateTime);
-//        return new ResponseMessage("nnkk");
+    public ResponseMessage Schedule(LocalDate localDate,String name,String Slot){
+
+        List<String> availableSlots = this.wfmRepo.findAvailableSlotsByWorkerAndDate(localDate,name);
+        if (availableSlots.isEmpty()){
+            return new ResponseMessage("This worker is bussy try anothor worker");
+        }
+        if (availableSlots.contains(Slot)){
+            int updatedRows = this.wfmRepo.updateVisitDataAndSlots(localDate,Slot,name);
+            if(updatedRows == 0){
+                return new ResponseMessage("Not Scedule");
+            }
+            return new ResponseMessage("Work order with name " +name+ " is scheduled  ");
+
+        }
+        return  new ResponseMessage ("this slot is already exist try anothor slot");
+
     }
 }
 

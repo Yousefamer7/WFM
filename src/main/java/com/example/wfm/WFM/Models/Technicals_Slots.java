@@ -18,11 +18,7 @@ public class Technicals_Slots {
     @Column(name = "ID")
     private  Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "TECHNICAL_ID")
-    private Technicals technicals;
-    @Column(name ="STARTTIME")
-    private Integer startTime;
-    @Column(name = "ENDTIME")
-    private Integer endTime;
+    @Column(name = "TIME_SLOT")
+    private  String slot;
+
 }

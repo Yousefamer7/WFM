@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseMessage {
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String MESSAGE;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object body;
@@ -16,7 +16,7 @@ public class ResponseMessage {
         public ResponseMessage(String msg){
             this.MESSAGE = msg;
         }
-        public ResponseMessage(Object body){
+        public ResponseMessage( Object body){
             this.body =body;
         }
 }
